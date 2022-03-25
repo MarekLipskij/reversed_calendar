@@ -227,6 +227,7 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
       _pagingReplyDownController.error;
     }
   }
+  
 
   @override
   Widget build(BuildContext context) {
