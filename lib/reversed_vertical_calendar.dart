@@ -38,7 +38,8 @@ class ReversedVerticalCalendar extends StatefulWidget {
       this.scrollController,
       this.listPadding = EdgeInsets.zero,
       this.initialDate,
-      this.monthDecoration});
+      this.monthDecoration,
+      this.monthPadding});
 
   /// the [DateTime] to start the calendar from, if no [startDate] is provided
   /// `DateTime.now()` will be used
@@ -94,6 +95,9 @@ class ReversedVerticalCalendar extends StatefulWidget {
 
   /// decoration for month container
   final BoxDecoration? monthDecoration;
+
+  /// padding for month container
+  final EdgeInsetsGeometry? monthPadding;
 
   @override
   _ReversedVerticalCalendarState createState() =>
@@ -251,7 +255,8 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
                         monthBuilder: widget.monthBuilder,
                         dayBuilder: widget.dayBuilder,
                         onDayPressed: widget.onDayPressed,
-                        monthDecoration: widget.monthDecoration);
+                        monthDecoration: widget.monthDecoration,
+                        monthPadding: widget.monthPadding);
                   },
                 ),
               ),
@@ -265,7 +270,8 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
                       monthBuilder: widget.monthBuilder,
                       dayBuilder: widget.dayBuilder,
                       onDayPressed: widget.onDayPressed,
-                      monthDecoration: widget.monthDecoration);
+                      monthDecoration: widget.monthDecoration,
+                      monthPadding: widget.monthPadding);
                 },
               ),
             ),
@@ -290,6 +296,7 @@ class _MonthView extends StatelessWidget {
     this.dayBuilder,
     this.onDayPressed,
     this.monthDecoration,
+    this.monthPadding,
   });
 
   final Month month;
@@ -297,12 +304,14 @@ class _MonthView extends StatelessWidget {
   final DayBuilder? dayBuilder;
   final ValueChanged<DateTime>? onDayPressed;
   final BoxDecoration? monthDecoration;
+  final EdgeInsetsGeometry? monthPadding;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Container(
+          padding: monthPadding,
           decoration: monthDecoration,
           child: Column(
             mainAxisSize: MainAxisSize.min,
