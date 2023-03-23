@@ -24,21 +24,21 @@ import 'package:reversed_vertical_calendar/utils/date_utils.dart';
 ///        ),
 /// ```
 class ReversedVerticalCalendar extends StatefulWidget {
-  ReversedVerticalCalendar({
-    this.startDate,
-    this.endDate,
-    this.monthBuilder,
-    this.dayBuilder,
-    this.addAutomaticKeepAlives = false,
-    this.onDayPressed,
-    this.onMonthLoaded,
-    this.onPaginationCompleted,
-    this.invisibleMonthsThreshold = 1,
-    this.physics,
-    this.scrollController,
-    this.listPadding = EdgeInsets.zero,
-    this.initialDate,
-  });
+  ReversedVerticalCalendar(
+      {this.startDate,
+      this.endDate,
+      this.monthBuilder,
+      this.dayBuilder,
+      this.addAutomaticKeepAlives = false,
+      this.onDayPressed,
+      this.onMonthLoaded,
+      this.onPaginationCompleted,
+      this.invisibleMonthsThreshold = 1,
+      this.physics,
+      this.scrollController,
+      this.listPadding = EdgeInsets.zero,
+      this.initialDate,
+      this.monthDecoration});
 
   /// the [DateTime] to start the calendar from, if no [startDate] is provided
   /// `DateTime.now()` will be used
@@ -92,8 +92,12 @@ class ReversedVerticalCalendar extends StatefulWidget {
   /// if inititial date is nulll, the start date will be used
   final DateTime? initialDate;
 
+  /// decoration for month container
+  final BoxDecoration? monthDecoration;
+
   @override
-  _ReversedVerticalCalendarState createState() => _ReversedVerticalCalendarState();
+  _ReversedVerticalCalendarState createState() =>
+      _ReversedVerticalCalendarState();
 }
 
 class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
@@ -227,7 +231,6 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
       _pagingReplyDownController.error;
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -244,11 +247,11 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
                 builderDelegate: PagedChildBuilderDelegate<Month>(
                   itemBuilder: (BuildContext context, Month month, int index) {
                     return _MonthView(
-                      month: month,
-                      monthBuilder: widget.monthBuilder,
-                      dayBuilder: widget.dayBuilder,
-                      onDayPressed: widget.onDayPressed,
-                    );
+                        month: month,
+                        monthBuilder: widget.monthBuilder,
+                        dayBuilder: widget.dayBuilder,
+                        onDayPressed: widget.onDayPressed,
+                        monthDecoration: widget.monthDecoration);
                   },
                 ),
               ),
@@ -258,11 +261,11 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
               builderDelegate: PagedChildBuilderDelegate<Month>(
                 itemBuilder: (BuildContext context, Month month, int index) {
                   return _MonthView(
-                    month: month,
-                    monthBuilder: widget.monthBuilder,
-                    dayBuilder: widget.dayBuilder,
-                    onDayPressed: widget.onDayPressed,
-                  );
+                      month: month,
+                      monthBuilder: widget.monthBuilder,
+                      dayBuilder: widget.dayBuilder,
+                      onDayPressed: widget.onDayPressed,
+                      monthDecoration: widget.monthDecoration);
                 },
               ),
             ),
@@ -286,27 +289,37 @@ class _MonthView extends StatelessWidget {
     this.monthBuilder,
     this.dayBuilder,
     this.onDayPressed,
+    this.monthDecoration,
   });
 
   final Month month;
   final MonthBuilder? monthBuilder;
   final DayBuilder? dayBuilder;
   final ValueChanged<DateTime>? onDayPressed;
+  final BoxDecoration? monthDecoration;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        /// display the default month header if none is provided
-        monthBuilder?.call(context, month.month, month.year) ??
-            _DefaultMonthView(
-              month: month.month,
-              year: month.year,
-            ),
-        Table(
-          children: month.weeks.map((Week week) {
-            return _generateWeekRow(context, week);
-          }).toList(growable: false),
+        Container(
+          decoration: monthDecoration,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              /// display the default month header if none is provided
+              monthBuilder?.call(context, month.month, month.year) ??
+                  _DefaultMonthView(
+                    month: month.month,
+                    year: month.year,
+                  ),
+              Table(
+                children: month.weeks.map((Week week) {
+                  return _generateWeekRow(context, week);
+                }).toList(growable: false),
+              ),
+            ],
+          ),
         ),
         SizedBox(
           height: 20,
