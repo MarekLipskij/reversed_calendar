@@ -119,8 +119,7 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
 
     if (widget.initialDate != null) {
       if (widget.endDate != null) {
-        int diffDaysEndDate =
-            widget.endDate!.difference(widget.initialDate!).inDays;
+        int diffDaysEndDate = widget.endDate!.difference(widget.initialDate!).inDays;
         if (diffDaysEndDate.isNegative) {
           initDate = widget.endDate!;
         } else {
@@ -160,13 +159,11 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
   }
 
   void paginationStatusUp(PagingStatus state) {
-    if (state == PagingStatus.completed)
-      return widget.onPaginationCompleted?.call();
+    if (state == PagingStatus.completed) return widget.onPaginationCompleted?.call();
   }
 
   void paginationStatusDown(PagingStatus state) {
-    if (state == PagingStatus.completed)
-      return widget.onPaginationCompleted?.call();
+    if (state == PagingStatus.completed) return widget.onPaginationCompleted?.call();
   }
 
   /// fetch a new [Month] object based on the [pageKey] which is the Nth month
@@ -183,13 +180,9 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
     //         .dateTime;
 
     try {
-      final month = DateUtils.getMonth(
-          DateTime(initDate.year, initDate.month - 1, 1),
-          widget.startDate,
-          pageKey,
-          true);
+      final month = DateUtils.getMonth(DateTime(initDate.year, initDate.month - 1, 1), widget.startDate, pageKey, true);
 
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance!.addPostFrameCallback(
         (_) => widget.onMonthLoaded?.call(month.year, month.month),
       );
 
@@ -217,13 +210,12 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
         false,
       );
 
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance!.addPostFrameCallback(
         (_) => widget.onMonthLoaded?.call(month.year, month.month),
       );
 
       final newItems = [month];
-      final isLastPage = widget.endDate != null &&
-          widget.endDate!.isSameDayOrBefore(month.weeks.last.lastDay);
+      final isLastPage = widget.endDate != null && widget.endDate!.isSameDayOrBefore(month.weeks.last.lastDay);
 
       if (isLastPage) {
         return _pagingReplyDownController.appendLastPage(newItems);
@@ -350,16 +342,14 @@ class _MonthView extends StatelessWidget {
             firstDay.day + (position - (firstDay.weekday - 1)),
           );
 
-          if ((position + 1) < week.firstDay.weekday ||
-              (position + 1) > week.lastDay.weekday) {
+          if ((position + 1) < week.firstDay.weekday || (position + 1) > week.lastDay.weekday) {
             return const SizedBox();
           } else {
             return AspectRatio(
               aspectRatio: 1.0,
               child: InkWell(
                 onTap: onDayPressed == null ? null : () => onDayPressed!(day),
-                child: dayBuilder?.call(context, day) ??
-                    _DefaultDayView(date: day),
+                child: dayBuilder?.call(context, day) ?? _DefaultDayView(date: day),
               ),
             );
           }
@@ -403,8 +393,7 @@ class _DefaultDayView extends StatelessWidget {
   }
 }
 
-typedef MonthBuilder = Widget Function(
-    BuildContext context, int month, int year);
+typedef MonthBuilder = Widget Function(BuildContext context, int month, int year);
 typedef DayBuilder = Widget Function(BuildContext context, DateTime date);
 
 typedef OnMonthLoaded = void Function(int year, int month);
