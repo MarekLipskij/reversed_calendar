@@ -100,8 +100,7 @@ class ReversedVerticalCalendar extends StatefulWidget {
   final EdgeInsetsGeometry? monthPadding;
 
   @override
-  _ReversedVerticalCalendarState createState() =>
-      _ReversedVerticalCalendarState();
+  _ReversedVerticalCalendarState createState() => _ReversedVerticalCalendarState();
 }
 
 class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
@@ -182,7 +181,7 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
     try {
       final month = DateUtils.getMonth(DateTime(initDate.year, initDate.month - 1, 1), widget.startDate, pageKey, true);
 
-      WidgetsBinding.instance!.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => widget.onMonthLoaded?.call(month.year, month.month),
       );
 
@@ -210,7 +209,7 @@ class _ReversedVerticalCalendarState extends State<ReversedVerticalCalendar> {
         false,
       );
 
-      WidgetsBinding.instance!.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => widget.onMonthLoaded?.call(month.year, month.month),
       );
 
